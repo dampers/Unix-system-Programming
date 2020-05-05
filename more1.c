@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define PAGELEN 24
+#define LINELEN 512
+
+void do_more(FILE *);
+int see_more();
+
+int main(int argc, char *argv[])
+{
+    FILE *fp;
+    if(argc == 1)
+    {
+        do_more(stdin);
+    }
+    else
+    {
+        printf("input argc = %d\n", argc);
+        while(--argc)
+        {
+            if((fp=fopen(*(++argv),"r")) != NULL)
+            {
+                do_more(fp);
+                fclose(fp);
+            }
+        }
+    }
+}
+
+void do_more(FILE * fp)
+{
+    char line[LINELEN];
+    int num_of_lines = 0;
+    see_more();
+    int reply; // int see_more() ??
+    while(fgets(line, LINELEN, fp))
+    {
+        if(num_of_lines == PAGELEN)
+        {
+            reply = see_more();
+            if(reply==0) break;
+            num_of_lines -= reply;
+        }
+        if(fputs(line, stdout)==EOF) exit(1);
+        num_of_lines++;
+    }
+}
+
+int see_more()
+{
+    int c;
+    printf("\033[7m more?\033[m"); // ANSI COLOR VALUE
+    while((c=getchar())!=EOF)
+    {
+        printf("c = %d\n", c);
+        if(c == 'q') return 0;
+        if(c == ' ') return PAGELEN;
+        if(c == '\n') return 1;
+        else if(c==0)
+        {
+            printf("c == 0\n I don\'t know why.\n");
+            return 0;
+        }
+    }
+    return 0;
+}
