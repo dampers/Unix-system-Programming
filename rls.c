@@ -26,14 +26,12 @@ int main(int ac, char *av[])
     servadd.sin_addr.s_addr = inet_addr(av[1]);
     servadd.sin_port = htons(atoi(av[2]));
     servadd.sin_family = AF_INET;
-
-    if(connect(sock_id, (struct sockaddr *)&servadd, sizeof(servadd)) != 0)
-        oops("connect");
-
-    if(write(sock_id, av[3], strlen(av[3])) != -1) oops("write");
+    if(connect(sock_id, (struct sockaddr *)&servadd, sizeof(servadd)) != 0) oops("connect");
+    
+    if(write(sock_id, av[3], strlen(av[3])) == -1) oops("write");
     if(write(sock_id, "\n", 1) == -1) oops("write");
 
-    while((n_read = read(sock_id, buffer, BUFSIZ)) > 0)
+    while((n_read = read(sock_id, buffer, BUFSIZ))>0)
         if(write(1, buffer, n_read) == -1)
             oops("write");
     close(sock_id);
