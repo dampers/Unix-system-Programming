@@ -1,0 +1,6 @@
+argsnum = 7
+args[0] ./test1
+args[2] one
+args[4] three
+args[6] five
+this is sent to stdout.
