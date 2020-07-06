@@ -51,7 +51,7 @@ int see_more()
     int c;
     printf("\033[7m more?\033[m"); // ANSI COLOR VALUE
     while((c=getchar())!=EOF)
-    {
+    {   
         printf("c = %d\n", c);
         if(c == 'q') return 0;
         if(c == ' ') return PAGELEN;
@@ -64,3 +64,15 @@ int see_more()
     }
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
